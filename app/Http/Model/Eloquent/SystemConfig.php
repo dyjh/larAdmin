@@ -14,6 +14,8 @@ class SystemConfig extends Model
     //
     protected $table = "system_config";
 
+    public $timestamps = false;
+
     protected $guarded = [];
 
     static $groups = [];
@@ -60,5 +62,9 @@ class SystemConfig extends Model
             ]);
         }
         return $ret;
+    }
+
+    public function setUpdatedAtAttribute($value) {
+        // Do nothing.
     }
 }

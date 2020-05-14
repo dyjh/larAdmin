@@ -11,5 +11,8 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index')->name('admin.home');
+    $router->resource('/setting', 'Config\ConfigController');
+    $router->get('/setting_form', 'Config\NormalConfigController@form');
 
+    $router->get('/base/getConstantOption', 'Base\ConstantController@getOption');
 });
