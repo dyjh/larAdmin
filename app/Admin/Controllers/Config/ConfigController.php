@@ -11,6 +11,7 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Support\Arr;
 
 /**
  * @author pxwei
@@ -42,15 +43,16 @@ class ConfigController extends AdminController
                 return "<span class='label label-default'>{$msg}</span>";
             });
         $grid->column('key', __('配置键'))->editable();
-        $grid->column('value', __('配置值'))->display(function (){
-            if (strlen($this->value)>30){
-                return mb_substr($this->value,0,20).'...';
+        $grid->column('value', __('配置值'))->display(function ($input) {
+            $input = json_decode($input, true);
+            if (is_array($input)) {
+                $input = Arr::except($input, ['_pjax', '_token', '_method', '_previous_']);
+                if (empty($input)) {
+                    return '<code>{}</code>';
+                }
             }
-            return $this->value;
-        })->modal('配置值',function (){
-            return $this->value;
-        })->copyable();
-
+            return '<pre>'.json_encode($input, JSON_PRETTY_PRINT | JSON_HEX_TAG).'</pre>';
+        });
         $grid->column('title', __('配置名称'))->editable();
         $grid->column('type', __('配置类型'))
             ->display(function ($state) {

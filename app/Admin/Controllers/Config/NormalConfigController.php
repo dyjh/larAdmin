@@ -12,7 +12,7 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Widgets\Form;
 
 /**
- * @author pxwei
+ * @author richod
  * Class ConfigController
  * @package App\Admin\Controllers\Form
  */
@@ -52,7 +52,7 @@ class NormalConfigController extends Controller
         foreach ($inputs as $k => $v){
             $groups = explode('____',$k);
             $num = count($groups);
-            if ($num< 1) {
+            if ($num < 1) {
                 continue;
             } else if ($num === 2) {
                 //普通字段配置
@@ -84,7 +84,7 @@ class NormalConfigController extends Controller
                 }
 
             }else if ($num == 4){
-                if ($groups[2]=="JA"){
+                if ($groups[2] == "JA"){
                     $jsonArr[$groups[0]][$groups[1]][$groups[3]] = $v;
                 }else{
                     //JSON字段配置
