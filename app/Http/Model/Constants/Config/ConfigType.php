@@ -26,6 +26,8 @@ class ConfigType extends Constant
     const RADIO         = 13;
     const DATE          = 14;
     const NUMBER        = 15;
+    const MONEY         = 16;
+    const RATE          = 17;
     private static $saveType = [
         'normal', 'selectList', 'json', 'jsonArr', 'file', 'switch'
     ];
@@ -46,6 +48,8 @@ class ConfigType extends Constant
         self::RADIO         => '单选框',
         self::DATE          => '日期选择器',
         self::NUMBER        => '数字输入框',
+        self::MONEY         => '货币输入框',
+        self::RATE          => '比例输入框',
     ];
 
 
@@ -288,6 +292,31 @@ class ConfigType extends Constant
     public static function form_15(Form &$form, array $value) : void
     {
         $form_ready = $form->number($value['group'] . '-' . $value['key'] . "-" . self::$saveType[0], $value['title'])->default($value['value']);
+        self::form_info_set($form_ready, $value);
+    }
+
+    /**
+     * 金额框
+     *
+     * @param Form $form
+     * @param array $value
+     */
+    public static function form_16(Form &$form, array $value) : void
+    {
+        $data = json_decode($value['value'], true);
+        $form_ready = $form->currency($value['group'] . '-' . $value['key'] . "-" . self::$saveType[0], $value['title'])->default($data['money'])->symbol($data['unit']);
+        self::form_info_set($form_ready, $value);
+    }
+
+    /**
+     * 比例框
+     *
+     * @param Form $form
+     * @param array $value
+     */
+    public static function form_17(Form &$form, array $value) : void
+    {
+        $form_ready = $form->rate($value['group'] . '-' . $value['key'] . "-" . self::$saveType[0], $value['title'])->default($value['value']);
         self::form_info_set($form_ready, $value);
     }
 

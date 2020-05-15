@@ -97,7 +97,8 @@ class ConfigController extends AdminController
         $form->select('type', __('配置类型'))->options('/admin/base/getConstantOption?constant_class=' . ConfigType::class);
         $form->text('comment', __('配置描述'));
         $form->text('rule', __('配置表单提交校验规则'))->help('内容不超过100个字符，以英文键盘|字符间隔');
-        $form->textarea('value', __('配置内容'))->help('其中 radio、select、checkbox 的格式为[{"key": "wechat", "text": "微信零钱", "value": 0}]，其中key为value，text为显示的名称，value为是否选中');
+        $form->textarea('value', __('配置内容'))->help('其中 单选框、多选框、下拉框 的格式为[{"key": "wechat", "text": "微信零钱", "value": 0}]，其中key为value，text为显示的名称，value为是否选中')
+        ->help('金额输入框的格式为{"money":0,"unit":"单位"}');
         $form->hidden('model', '模块')->value(ConfigModel::SYSTEM);
         return $form;
     }
