@@ -9,8 +9,11 @@ use App\Common\Constants\ErrorCode;
 
 class ConstantHelper
 {
-    public static function message(Constant $constant, $code)
+    public static function message($constant, $code)
     {
+        if (!class_exists($constant)) {
+            return null;
+        }
         if (isset($constant::$_msg[$code])) {
             return $constant::$_msg[$code];
         } else {

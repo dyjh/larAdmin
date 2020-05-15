@@ -24,7 +24,7 @@ class ConstantController extends Controller
             foreach ($arrConst as $key => $val) {
                 $options[] = (Object)[
                     'id'   => $val,
-                    'text' => ConstantHelper::message(new $class, $val)
+                    'text' => ConstantHelper::message($class, $val)
                 ];
             }
             return $options;

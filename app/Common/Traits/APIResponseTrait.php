@@ -22,7 +22,7 @@ trait APIResponseTrait
     private function genApiData($data, $code = 0, $message = '')
     {
         if ($code !== 0 && ErrorCode::PARAMS_ERROR && empty($message)) {
-            $message = ConstantHelper::message(new ErrorCode(), $code);
+            $message = ConstantHelper::message(ErrorCode::class, $code);
         }
         return [
             'status'      => $code == 0,

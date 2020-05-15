@@ -5,6 +5,7 @@ namespace App\Admin\Controllers\Config;
 use App\Common\Helper\ConstantHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Model\Constants\Config\ConfigGroup;
+use App\Http\Model\Constants\Config\ConfigModel;
 use App\Http\Model\Constants\Config\ConfigType;
 use App\Model\Eloquent\SystemConfig;
 use Encore\Admin\Layout\Content;
@@ -19,9 +20,9 @@ class NormalConfigController extends Controller
 {
     public function form()
     {
-        $dbs = SystemConfig::orderby('id','asc')->get(['id','group','key','value','comment','title','type'])->toArray();
+        $dbs = SystemConfig::where('model', ConfigModel::SYSTEM)->orderby('id','asc')->get(['id','group','key','value','comment','title','type'])->toArray();
         $configs = [];
-        $configGroup = new ConfigGroup();
+        $configGroup = ConfigGroup::class;
         foreach ($dbs as $db){
             $name = ConstantHelper::message($configGroup, $db['group']);
             $configs[$name][] = $db;

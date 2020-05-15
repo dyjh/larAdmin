@@ -38,7 +38,7 @@ class ConfigController extends AdminController
         $grid->column('id', __('ID'))->sortable();
         $grid->column('group', __('配置分组'))
             ->display(function ($state) {
-                $msg = ConstantHelper::message(new ConfigGroup(), $state);
+                $msg = ConstantHelper::message(ConfigGroup::class, $state);
                 return "<span class='label label-default'>{$msg}</span>";
             });
         $grid->column('key', __('配置键'))->editable();
@@ -54,7 +54,7 @@ class ConfigController extends AdminController
         $grid->column('title', __('配置名称'))->editable();
         $grid->column('type', __('配置类型'))
             ->display(function ($state) {
-                $msg = ConstantHelper::message(new ConfigType(), $state);
+                $msg = ConstantHelper::message(ConfigType::class, $state);
                 return "<span class='label label-success'>{$msg}</span>";
             });
         $grid->column('comment', __('配置说明'))->editable();
