@@ -64,7 +64,4 @@ class SystemConfig extends Model
         return $ret;
     }
 
-    public function setUpdatedAtAttribute($value) {
-        // Do nothing.
-    }
 }
