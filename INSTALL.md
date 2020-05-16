@@ -22,6 +22,7 @@
     php artisan passport:client --password 
 
 ## reliese/laravel 0.0.15 Model批量生成
+注意：本插件仅在local环境使用
 
 全部生成（慎用）
 
