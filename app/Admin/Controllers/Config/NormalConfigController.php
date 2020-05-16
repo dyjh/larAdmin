@@ -4,10 +4,10 @@ namespace App\Admin\Controllers\Config;
 
 use App\Common\Helper\ConstantHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Model\Constants\Config\ConfigGroup;
-use App\Http\Model\Constants\Config\ConfigModel;
-use App\Http\Model\Constants\Config\ConfigType;
-use App\Http\Model\Eloquent\SystemConfig;
+use App\Models\Constants\Config\ConfigGroup;
+use App\Models\Constants\Config\ConfigModel;
+use App\Models\Constants\Config\ConfigType;
+use App\Models\Eloquent\SystemConfig;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Widgets\Form;
 

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Model\Constants\Config;
+namespace App\Models\Constants\Config;
 
 
 use App\Common\Constants\Constant;
