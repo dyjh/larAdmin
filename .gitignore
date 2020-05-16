@@ -11,3 +11,7 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 /.idea
+/storage/oauth-private.key
+/storage/oauth-public.key
+/storage/laravels.json
+/storage/laravels.pid
