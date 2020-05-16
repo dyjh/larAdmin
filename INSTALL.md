@@ -42,6 +42,12 @@ curd根据Model生成Controller
 
     $router->resource('users', UserController::class);
 
+## laravels
+
+启动
+
+    php bin/laravels start
+    
 ## USEFUL LINK
 - transformer [fractal](http://fractal.thephpleague.com/)
 - l5-swagger [https://github.com/DarkaOnLine/L5-Swagger](https://github.com/DarkaOnLine/L5-Swagger)
