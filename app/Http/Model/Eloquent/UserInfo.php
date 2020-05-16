@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Model\Eloquent;
+namespace App\Http\Model\Eloquent;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -46,5 +45,10 @@ class UserInfo extends Authenticatable
     public function findForPassport($username)
     {
         return $this->where('username', $username)->first();
+    }
+
+    public function level()
+    {
+        return $this->belongsTo(UserLevel::class, 'level_id', 'id');
     }
 }

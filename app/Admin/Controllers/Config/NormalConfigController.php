@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Model\Constants\Config\ConfigGroup;
 use App\Http\Model\Constants\Config\ConfigModel;
 use App\Http\Model\Constants\Config\ConfigType;
-use App\Model\Eloquent\SystemConfig;
+use App\Http\Model\Eloquent\SystemConfig;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Widgets\Form;
 

@@ -41,10 +41,6 @@ return [
             'provider' => 'user_info',
         ],
 
-        'api_login' => [
-            'driver' => 'session',
-            'provider' => 'user_info',
-        ],
         'api' => [
             'driver' => 'passport',
             'provider' => 'user_info',
@@ -70,13 +66,13 @@ return [
     */
 
     'providers' => [
-        /*'users' => [
+        'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
-        ],*/
+        ],
         'user_info' => [
             'driver' => 'eloquent',
-            'model' => \App\Model\Eloquent\UserInfo::class,
+            'model' => \App\Http\Model\Eloquent\UserInfo::class,
         ],
 
         // 'users' => [

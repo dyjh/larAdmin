@@ -32,6 +32,7 @@ class AuthController extends Controller
     public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
     /**
@@ -139,20 +140,61 @@ class AuthController extends Controller
     {
         $credentials = $request->only(['mobile', 'password']);
         try {
-            if ((int)Redis::connection()->get("login_fail_{$credentials['mobile']}") === 0) {
+            if (Redis::connection()->get("login_fail_{$credentials['mobile']}") === "0") {
                 throw new \Exception(ConstantHelper::errMessage(ErrorCode::ACCOUNT_IS_FREEZE), ErrorCode::ACCOUNT_IS_FREEZE);
             }
+
             if (Auth::attempt($credentials)) {
                 $token = $this->repository->getToken($credentials['mobile']);
                 return $this->api([
-                    'token' => $token
+                    'token' => "Bearer " . $token
                 ]);
             } else {
                 $msg = $this->repository->loginFail($credentials['mobile']);
                 return $this->error(ErrorCode::MOBILE_OR_PASSWORD_INCORRECT, $msg);
             }
         } catch (\Exception $e) {
+
             return $this->error($e->getCode(), $e->getMessage());
         }
+    }
+
+    /**
+     * Log the user out (Invalidate the token).
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        auth('api')->logout();
+
+        return $this->api([]);
+    }
+
+    /**
+     * Refresh a token.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh()
+    {
+        return $this->respondWithToken(auth('api')->refresh());
+    }
+
+    /**
+     * Get the token array structure.
+     *
+     * @param string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token)
+    {
+
+        return $this->api([
+            'token' => 'bearer ' . $token,
+            'rong_cloud_token' => auth('api')->user()->rong_cloud_token,
+            'expires_in' => auth('api')->factory()->getTTL() * 60
+        ]);
     }
 }

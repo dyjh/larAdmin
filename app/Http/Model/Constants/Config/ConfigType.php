@@ -5,7 +5,7 @@ namespace App\Http\Model\Constants\Config;
 
 
 use App\Common\Constants\Constant;
-use App\Model\Eloquent\SystemConfig;
+use App\Http\Model\Eloquent\SystemConfig;
 use Encore\Admin\Form\Field;
 use Encore\Admin\Widgets\Form;
 

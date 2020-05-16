@@ -4,8 +4,8 @@
 namespace App\Repositories;
 
 
-use App\Model\Eloquent\SystemConfig;
-use App\Model\Eloquent\UserInfo;
+use App\Http\Model\Eloquent\SystemConfig;
+use App\Http\Model\Eloquent\UserInfo;
 use Illuminate\Support\Facades\Redis;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Validator\Exceptions\ValidatorException;
@@ -54,8 +54,7 @@ class UserRepository extends BaseRepository
     public function getToken(string $mobile) : string
     {
         $name = md5('');
-        return $this->findWhere(['mobile'=> $mobile])->first()
-            ->createToken($name)->accessToken;
+        return auth()->user()->createToken($name)->accessToken;
     }
 
 

@@ -20,6 +20,7 @@ final class ErrorCode extends Constant {
     const MODULE_IS_NOT_USE = 104;
     const MOBILE_OR_PASSWORD_INCORRECT = 105;
     const ACCOUNT_IS_FREEZE = 106;
+    const NO_LOGIN = 107;
 
     //错误常量枚举
     public static $_msg = [
@@ -29,5 +30,6 @@ final class ErrorCode extends Constant {
         self::CONFIGURE_SMS_TEMPLATE => '请先配置模板',
         self::MOBILE_OR_PASSWORD_INCORRECT => '用户名或者密码错误',
         self::ACCOUNT_IS_FREEZE => '您的账户已被冻结',
+        self::NO_LOGIN => '用户未登录',
     ];
 }

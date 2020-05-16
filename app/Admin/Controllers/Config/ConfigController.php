@@ -6,7 +6,7 @@ use App\Common\Helper\ConstantHelper;
 use App\Http\Model\Constants\Config\ConfigGroup;
 use App\Http\Model\Constants\Config\ConfigModel;
 use App\Http\Model\Constants\Config\ConfigType;
-use App\Model\Eloquent\SystemConfig;
+use App\Http\Model\Eloquent\SystemConfig;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;

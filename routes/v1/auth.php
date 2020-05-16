@@ -1,4 +1,6 @@
 <?php
+
+use Illuminate\Support\Facades\Route;
 /**
  * 用户认证
  */
@@ -9,10 +11,9 @@ Route::group([], function (\Illuminate\Routing\Router $router) {
 });
 
 Route::group([
-    'middleware' => 'api',
+    'middleware' => 'auth:api',
 ], function (\Illuminate\Routing\Router $router) {
     $router->post('refresh', 'AuthController@refresh');
     $router->post('logout', 'AuthController@logout');
-    $router->post('me', 'AuthController@me');
 });
 
