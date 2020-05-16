@@ -104,15 +104,13 @@ class AuthController extends Controller
     /**
      * 用户注册
      *
-     * @param LoginRequest $request
-     * @return \Illuminate\Http\JsonResponse
      * @OA\Post(
      *      path="/auth/login",
      *      operationId="login",
      *      tags={"Auth"},
      *      summary="Get project information",
-     *      description="用户登录,
-     *     @OA\Parameter(
+     *      description="用户登录",
+     *      @OA\Parameter(
      *          name="mobile",
      *          description="用户手机号",
      *          required=true,
@@ -121,7 +119,7 @@ class AuthController extends Controller
      *              type="string"
      *          )
      *      ),
-     *     @OA\Parameter(
+     *      @OA\Parameter(
      *          name="password",
      *          description="用户密码",
      *          required=true,

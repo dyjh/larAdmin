@@ -71,6 +71,56 @@
                     }
                 }
             }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Get project information",
+                "description": "用户登录",
+                "operationId": "login",
+                "parameters": [
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "description": "用户手机号",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "用户密码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/user/me": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get project information",
+                "description": "用户获取个人信息",
+                "operationId": "me",
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
         }
     },
     "components": {
