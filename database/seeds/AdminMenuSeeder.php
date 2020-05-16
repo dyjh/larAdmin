@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class BaseConfigMenuSeeder extends Seeder
+class AdminMenuSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -45,6 +45,23 @@ class BaseConfigMenuSeeder extends Seeder
                     'updated_at' => '2020-05-14 11:52:20',
                 ]
 
+            ]);
+        } catch (\Exception $e) {
+
+        }
+        try {
+            \Illuminate\Support\Facades\DB::table('admin_menu')->insert([
+                [
+                    'id' => 11,
+                    'parent_id' => 0,
+                    'order' => 2,
+                    'title' => '文件管理',
+                    'icon' => 'fa-file',
+                    'uri' => '/media',
+                    'permission' => '*',
+                    'created_at' => '2020-05-14 11:49:59',
+                    'updated_at' => '2020-05-14 11:52:20',
+                ]
             ]);
         } catch (\Exception $e) {
 

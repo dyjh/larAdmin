@@ -406,6 +406,9 @@ return [
                 'initialFrameHeight' => 400, // 例如初始化高度
             ],
             'field_type' => 'ueditor'
-        ]
+        ],
+        'media-manager' => [
+            'disk' => env('FILESYSTEM_DRIVER', 'local')   // Points to the disk set in config/filesystem.php
+        ],
     ],
 ];

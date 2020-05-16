@@ -7,6 +7,7 @@
 - 执行 `php artisan migrate`
 - 执行 `php artisan db:seed --class=DatabaseSeeder`
 - 执行 `php artisan passport:install`
+- 执行 `php artisan storage:link`
 - storage下所有目录 和 bootstrap/cache 目录应该是可写的
 - 键入 '域名/admin'(后台登录)
 - 用户名：admin；密码：admin

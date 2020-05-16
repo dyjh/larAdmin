@@ -11,9 +11,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UserSeeder::class);
         $this->call([
-            BaseConfigMenuSeeder::class,
+            AdminMenuSeeder::class,
+            AdminPermissionSeeder::class,
         ]);
     }
 }
