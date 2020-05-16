@@ -10,7 +10,7 @@
 - 执行 `php artisan storage:link`
 - storage下所有目录 和 bootstrap/cache 目录应该是可写的
 - 键入 '域名/admin'(后台登录)
-- 用户名：admin；密码：admin
+- 用户名：admin；密码：admin，若数据库无数据请执行`php artisan admin:install`
 
 - 生成文档 php artisan l5-swagger:generate 
 - api文档在api/documentation里面, 也可以看上面的 `在线api文档`
