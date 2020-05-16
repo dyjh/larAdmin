@@ -28,12 +28,22 @@ class ConfigType extends Constant
     const NUMBER        = 15;
     const MONEY         = 16;
     const RATE          = 17;
+    const EMAIL         = 18;
+    const PASSWORD      = 19;
+    const URL           = 20;
+    const IP            = 21;
+    const MOBILE        = 22;
     private static $saveType = [
         'normal', 'selectList', 'json', 'jsonArr', 'file', 'switch'
     ];
 
     public static $_msg = [
         self::TEXT          => '纯文本',
+        self::MOBILE        => '电话输入框',
+        self::IP            => 'ip输入框',
+        self::URL           => '链接输入框',
+        self::PASSWORD      => '密码框',
+        self::EMAIL         => '邮箱框',
         self::TEXTAREA      => '文本域',
         self::TEXTAREA_RICH => '富文本',
         self::JSON          => 'JSON',
@@ -328,6 +338,66 @@ class ConfigType extends Constant
         if (!empty($value['rule'])) {
             $form->rules($value['rule']);
         }
+    }
+
+    /**
+     * 邮箱输入框
+     *
+     * @param Form $form
+     * @param array $value
+     */
+    public static function form_18(Form &$form, array $value) : void
+    {
+        $form_ready = $form->email($value['group'] . '-' . $value['key'] . "-" . self::$saveType[0], $value['title'])->default($value['value']);
+        self::form_info_set($form_ready, $value);
+    }
+
+    /**
+     * 密码输入框
+     *
+     * @param Form $form
+     * @param array $value
+     */
+    public static function form_19(Form &$form, array $value) : void
+    {
+        $form_ready = $form->password($value['group'] . '-' . $value['key'] . "-" . self::$saveType[0], $value['title'])->default($value['value']);
+        self::form_info_set($form_ready, $value);
+    }
+
+    /**
+     * 链接入框
+     *
+     * @param Form $form
+     * @param array $value
+     */
+    public static function form_20(Form &$form, array $value) : void
+    {
+        $form_ready = $form->url($value['group'] . '-' . $value['key'] . "-" . self::$saveType[0], $value['title'])->default($value['value']);
+        self::form_info_set($form_ready, $value);
+    }
+
+    /**
+     * ip入框
+     *
+     * @param Form $form
+     * @param array $value
+     */
+    public static function form_21(Form &$form, array $value) : void
+    {
+        $form_ready = $form->ip($value['group'] . '-' . $value['key'] . "-" . self::$saveType[0], $value['title'])->default($value['value']);
+        self::form_info_set($form_ready, $value);
+    }
+
+    /**
+     * 电话入框
+     *
+     * @param Form $form
+     * @param array $value
+     */
+    public static function form_22(Form &$form, array $value) : void
+    {
+        $form_ready = $form->mobile($value['group'] . '-' . $value['key'] . "-" . self::$saveType[0], $value['title'])->default($value['value']);
+        self::form_info_set($form_ready, $value);
     }
 
     public static function save_normal($groups, $v)
