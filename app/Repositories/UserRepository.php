@@ -4,8 +4,8 @@
 namespace App\Repositories;
 
 
-use App\Http\Model\Eloquent\SystemConfig;
-use App\Http\Model\Eloquent\UserInfo;
+use App\Models\Eloquent\SystemConfig;
+use App\Models\Eloquent\UserInfo;
 use Illuminate\Support\Facades\Redis;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Validator\Exceptions\ValidatorException;

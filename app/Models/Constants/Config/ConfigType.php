@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Http\Model\Constants\Config;
+namespace App\Models\Constants\Config;
 
 
 use App\Common\Constants\Constant;
-use App\Http\Model\Eloquent\SystemConfig;
+use App\Models\Eloquent\SystemConfig;
 use Encore\Admin\Form\Field;
 use Encore\Admin\Widgets\Form;
 
