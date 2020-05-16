@@ -1,24 +1,50 @@
 <?php
 
-namespace App\Http\Model\Eloquent;
+/**
+ * Created by Reliese Model.
+ */
+
+namespace App\Models\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class System_Config
- * @package App
+ * Class SystemConfig
+ *
+ * @property string $group
+ * @property string $key
+ * @property array $value
+ * @property int $type
+ * @property string $comment
+ * @property string $title
+ * @property int $model
+ * @property int $id
+ * @property string $rule
+ *
+ * @package App\Models\Eloquent
  */
-
 class SystemConfig extends Model
 {
-    //
-    protected $table = "system_config";
+	protected $table = 'system_config';
 
-    public $timestamps = false;
+	public $timestamps = false;
 
-    protected $guarded = [];
+	protected $casts = [
+		'value' => 'json',
+		'type' => 'int',
+		'model' => 'int'
+	];
 
-    static $groups = [];
+	protected $fillable = [
+		'group',
+		'key',
+		'value',
+		'type',
+		'comment',
+		'title',
+		'model',
+		'rule'
+	];
 
     /**
      * @param String $group
@@ -63,5 +89,4 @@ class SystemConfig extends Model
         }
         return $ret;
     }
-
 }

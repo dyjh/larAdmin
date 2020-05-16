@@ -72,7 +72,7 @@ return [
         ],
         'user_info' => [
             'driver' => 'eloquent',
-            'model' => \App\Http\Model\Eloquent\UserInfo::class,
+            'model' => \App\Models\Eloquent\UserInfo::class,
         ],
 
         // 'users' => [
