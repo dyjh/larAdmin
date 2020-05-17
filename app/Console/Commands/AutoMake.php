@@ -77,6 +77,7 @@ class AutoMake extends GeneratorCommand
         //
         $table = $this->option('table');
         $fileName =  str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
+
         $this->modelName = "App\\Models\\Eloquent\\{$fileName}";
         $this->controllerName = "{$fileName}Controller";
 
@@ -101,15 +102,59 @@ class AutoMake extends GeneratorCommand
         if (parent::handle() !== false) {
             $name = $this->controllerName;
             $path = Str::plural(Str::kebab(class_basename($this->modelName)));
-
-            $this->line('');
-            $this->comment('Add the following route to app/Admin/routes.php:');
-            $this->line('');
-            $this->info("    \$router->resource('{$path}', {$name}::class);");
-            $this->line('');
+            $this->insertAfterTarget(app_path('Admin/routes.php'), "    \$router->resource('/{$path}', {$name}::class);", '$router->');
+            $this->info("create the following route /{$path} successfully.");
         }
         // Otherwise map the whole database
         return true;
+    }
+
+    protected function insertAfterTarget($filePath, $insertCont, $target)
+    {
+        if ($this->getLineNum($filePath, $insertCont)) {
+            return true;
+        }
+        $result = null;
+        $fileCont = file_get_contents($filePath);
+        $targetIndex = strrpos($fileCont, $target); #查找目标字符串的坐标
+
+        if ($targetIndex !== false) {
+            #找到target的后一个换行符
+            $chLineIndex = strpos(substr($fileCont, $targetIndex), "\n") + $targetIndex;
+            if ($chLineIndex !== false) {
+                #插入需要插入的内容
+                $result = substr($fileCont, 0, $chLineIndex + 1) . $insertCont . "\n" . substr($fileCont, $chLineIndex + 1);
+                $fp = fopen($filePath, "w+");
+                fwrite($fp, $result);
+                fclose($fp);
+            }
+        }
+    }
+
+    #获取某段内容的行号
+    /**
+     * @param $filePath
+     * @param string $target
+     * @param bool $first   是否再匹配到第一个字段后退出
+     * @return array|int
+     */
+    protected function getLineNum($filePath, $target, $first = false)
+    {
+        $fp = fopen($filePath, "r");
+        $lineNumArr = array();
+        $lineNum = 0;
+        while (!feof($fp)) {
+            $lineNum++;
+            $lineCont = fgets($fp);
+            if (strstr($lineCont, $target)) {
+                if($first) {
+                    return $lineNum;
+                } else {
+                    $lineNumArr[] = $lineNum;
+                }
+            }
+        }
+        return $lineNumArr;
     }
 
 
