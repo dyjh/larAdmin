@@ -21,6 +21,10 @@
 
     php artisan passport:client --password 
 
+## 自定义curd命令 生成model和controller
+
+    php artisan generate:auto-make --table=users
+
 ## reliese/laravel 0.0.15 Model批量生成
 注意：本插件仅在local环境使用
 
