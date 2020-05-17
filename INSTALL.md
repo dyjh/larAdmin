@@ -25,33 +25,6 @@
 
     php artisan generate:auto-make --table=users
 
-## reliese/laravel 0.0.15 Model批量生成
-注意：本插件仅在local环境使用
-
-全部生成（慎用）
-
-    php artisan code:models
-    
-生成某个表
-
-    php artisan code:models --table=users
-
-## encore/laravel-admin
-
-curd根据Model生成Controller
-
-    php artisan admin:make UserController --model=App\\Models\\Eloquent\\User
-
-添加路由配置 `app/Admin/routes.php`
-
-    $router->resource('users', UserController::class);
-
-## laravels
-
-启动
-
-    php bin/laravels start
-    
 ## USEFUL LINK
 - transformer [fractal](http://fractal.thephpleague.com/)
 - l5-swagger [https://github.com/DarkaOnLine/L5-Swagger](https://github.com/DarkaOnLine/L5-Swagger)
