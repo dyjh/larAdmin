@@ -15,7 +15,14 @@
  * Or require js and css assets:
  * Admin::css('/packages/prettydocs/css/styles.css');
  * Admin::js('/packages/prettydocs/js/main.js');
+ * Admin::headerJs('/packages/prettydocs/js/main.js');
  *
  */
 
 Encore\Admin\Form::forget(['map', 'editor']);
+
+Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navbar) {
+
+    $navbar->right(new \App\Admin\Extensions\Nav\Links());
+
+});
