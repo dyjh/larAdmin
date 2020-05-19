@@ -15,3 +15,7 @@ yarn-error.log
 /storage/oauth-public.key
 /storage/laravels.json
 /storage/laravels.pid
+.user.ini
+_ide_helper.php
+.phpstorm.meta.php
+composer.lock
