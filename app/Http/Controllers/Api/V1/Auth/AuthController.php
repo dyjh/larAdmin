@@ -9,8 +9,8 @@ use App\Common\Traits\APIResponseTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\auth\LoginRequest;
 use App\Http\Requests\auth\RegisterRequest;
-use App\Repositories\UserRepository;
-use App\Services\Base\SmsServer;
+use App\Http\Repositories\UserRepository;
+use App\Common\Services\Base\SmsServer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 

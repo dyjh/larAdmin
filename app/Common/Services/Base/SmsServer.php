@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services\Base;
+namespace App\Common\Services\Base;
 
 
 use App\Common\Constants\ErrorCode;
@@ -10,7 +10,7 @@ use App\Common\Helper\ConstantHelper;
 use App\Exceptions\api\SmsException;
 use App\Models\Eloquent\SystemConfig;
 use App\Models\Eloquent\UserInfo;
-use App\Services\Sms\Sms;
+use App\Common\Services\Sms\Sms;
 use Illuminate\Support\Facades\Redis;
 use Mockery\Exception;
 
@@ -65,7 +65,7 @@ class SmsServer
     {
         if ($method == self::METHOD_SEND) {
             $type = SystemConfig::get('sms_config', 'sms_type', 'AliSmsServer');
-            $typeClass = '\App\Services\Sms\\' . $type;
+            $typeClass = '\App\Common\Services\Sms\\' . $type;
             if (!class_exists($type)) {
                 throw new SmsException(ConstantHelper::errMessage(ErrorCode::MODULE_IS_NOT_USE), ErrorCode::MODULE_IS_NOT_USE);
             }

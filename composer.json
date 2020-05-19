@@ -19,7 +19,8 @@
         "laravel/framework": "^7.0",
         "laravel/passport": "9.1",
         "laravel/tinker": "^2.0",
-        "prettus/l5-repository": "^2.6"
+        "prettus/l5-repository": "^2.6",
+      "ext-redis": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

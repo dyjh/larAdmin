@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Sms;
+namespace App\Common\Services\Sms;
 
 use AlibabaCloud\Client\AlibabaCloud;
 use AlibabaCloud\Client\Exception\ClientException;
@@ -12,7 +12,7 @@ use App\Exceptions\api\SmsException;
  * 短信接口
  *
  * Class AliSmsServer
- * @package App\Services\Sms
+ * @package App\Common\Services\Sms
  */
 class AliSmsServer implements Sms
 {

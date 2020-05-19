@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Sms;
+namespace App\Common\Services\Sms;
 
 /**
  * 短信类接口
  *
  * Interface Sms
- * @package App\Services\Sms
+ * @package App\Common\Services\Sms
  */
 Interface Sms
 {
