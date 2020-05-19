@@ -77,7 +77,7 @@ class AutoMake extends GeneratorCommand
         //
         $table = $this->option('table');
         $fileName =  str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
-
+        //echo $fileName;die;
         $this->modelName = "App\\Models\\Eloquent\\{$fileName}";
         $this->controllerName = "{$fileName}Controller";
 

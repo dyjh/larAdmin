@@ -9,7 +9,7 @@ use App\Common\Traits\APIResponseTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\auth\LoginRequest;
 use App\Http\Requests\auth\RegisterRequest;
-use App\Http\Repositories\UserRepository;
+use App\Http\Repositories\PluginsRepository;
 use App\Common\Services\Base\SmsServer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
@@ -21,15 +21,15 @@ class AuthController extends Controller
     /**
      * 用户相关逻辑层
      *
-     * @var UserRepository
+     * @var PluginsRepository
      */
-    private UserRepository $repository;
+    private PluginsRepository $repository;
 
     /**
      * AuthController constructor.
-     * @param UserRepository $repository
+     * @param PluginsRepository $repository
      */
-    public function __construct(UserRepository $repository)
+    public function __construct(PluginsRepository $repository)
     {
         $this->repository = $repository;
         $this->middleware('auth:api', ['except' => ['login', 'register']]);

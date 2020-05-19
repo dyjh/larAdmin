@@ -15,4 +15,5 @@ Route::group([
     $router->get('/setting_form', 'Config\NormalConfigController@form');
     $router->post('/setting_form_save', 'Config\NormalConfigController@settingFormSave');
     $router->get('/base/getConstantOption', 'Base\ConstantController@getOption');
+    $router->resource('/plugins', PluginsController::class);
 });
