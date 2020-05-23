@@ -25,9 +25,5 @@ class TestController
     public function index()
     {
 
-        $data = app('plugins')->install('plugins-market');
-
-
-Log::info(1111);
     }
 }

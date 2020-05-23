@@ -106,7 +106,7 @@ class PluginServiceProvider extends ServiceProvider
     {
         spl_autoload_register(function ($class) use ($paths) {
 
-            if (!(mb_strpos($class, 'Yunshop') === 0)) {
+            if (!(mb_strpos($class, 'Plugins') === 0)) {
                 return false;
             }
             // traverse in registered plugin paths

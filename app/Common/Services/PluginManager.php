@@ -68,7 +68,8 @@ class PluginManager
             foreach ($pluginDirs as $pluginDir) {
                 if (file_exists($pluginDir . "/package.json")) {
                     // Instantiates an Plugin object using the package path and package.json file.
-                    $plugin = new Plugin($pluginDir);
+                    $plugin = new Plugin();
+                    $plugin->setPath($pluginDir);
                     $checkInstall = $this->option->findWhere(['name' => $plugin->name])->first();
                     if ($checkInstall) {
                         $plugin->setInstalled(true);
@@ -99,7 +100,8 @@ class PluginManager
 
         foreach ($pluginDirs as $pluginDir) {
             if (file_exists($pluginDir . "/package.json")) {
-                $plugin = new Plugin($pluginDir);
+                $plugin = new Plugin();
+                $plugin->setPath($pluginDir);
                 $checkInstall = $this->option->findWhere(['name' => $plugin->name])->first();
                 if ($checkInstall) {
                     continue;
@@ -151,9 +153,8 @@ class PluginManager
         if (!$this->isOptionEnable($name)) {
             DB::transaction(function () use ($name) {
                 $plugin = $this->getPlugin($name);
-                $enabled = $this->getAll();
 //                $enabled[] = $name;
-                $this->setEnabled($enabled[$name]['id'], 1, $name);
+                $this->setEnabled(1, $name);
                 $plugin->setEnabled(true);
                 $plugin->app()->init();
                 //b$this->dispatcher->fire(new events\PluginWasEnabled($plugin));
@@ -170,14 +171,12 @@ class PluginManager
      */
     public function disable($name)
     {
-
-        $enabled = $this->getAll();
-
         $plugin = $this->getPlugin($name);
 
-        $this->option->editDisable($enabled[$name]['id']);
+        $this->setEnabled(0, $name);
 
         $plugin->setEnabled(false);
+        $plugin->app()->init();
         //$this->dispatcher->fire(new events\PluginWasEnabled($plugin));
         event(new PluginWasDisabled($plugin));
     }
@@ -189,22 +188,44 @@ class PluginManager
      */
     public function uninstall($name)
     {
-        $plugin = $this->getPlugin($name);
-        $this->disable($name);
+        try {
+            $plugin = $this->getPlugin($name);
+            $this->disable($name);
 
-        // fire event before deleeting plugin files
-        //$this->dispatcher->fire(new events\PluginWasDeleted($plugin));
-        event(new PluginWasDeleted($plugin));
-        $this->filesystem->deleteDirectory($plugin->getPath());
-
-        // refresh plugin list
-        $this->plugins = null;
+            event(new PluginWasDeleted($plugin));
+            $this->filesystem->deleteDirectory($plugin->getPath());
+            $this->option->where('name', $name)->delete();
+            // refresh plugin list
+            $this->plugins = null;
+            return "success";
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
+    /**
+     * @param $name
+     * @return string
+     */
     public function install($name)
     {
-        $plugin = $this->getPlugin($name);
-        event(new PluginWasInstall($plugin));
+        try {
+            $plugin = $this->getPlugin($name);
+            event(new PluginWasInstall($plugin));
+            $check = $this->option->findWhere(['name' => $name])->first();
+            if (!$check) {
+                if ($this->option->insertPlugin($name)) {
+                    return 'success';
+                } else {
+                    return 'fail';
+                }
+            } else {
+                return 'success';
+            }
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
     }
 
     /**
@@ -237,16 +258,15 @@ class PluginManager
     /**
      * Persist the currently enabled plugins.
      *
-     * @param $id
      * @param int $enabled
      * @param null $name
      * @return bool|mixed
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    protected function setEnabled($id, $enabled, $name = null)
+    protected function setEnabled($enabled, $name)
     {
         $check = $this->option->findWhere(['name', $name]);
-        if ($check) {
+        if (!$check) {
             return $this->option->insertPlugin($name);
         } else {
             return $this->option->switchPlugin($name, $enabled);

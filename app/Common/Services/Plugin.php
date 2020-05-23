@@ -2,6 +2,7 @@
 
 namespace App\Common\Services;
 
+use App\Common\Helper\Url;
 use ArrayAccess;
 use Illuminate\Support\Arr;
 use Illuminate\Contracts\Support\Arrayable;
@@ -55,15 +56,14 @@ class Plugin implements Arrayable, ArrayAccess
      */
     protected $enabled = false;
 
-    /**
-     * @param string $path
-     */
-    public function __construct(string $path)
+
+    public function setPath(string $path)
     {
         $this->path = $path;
         $this->packageInfo = $this->getPackageInfo();
         $this->packageInfo['icon'] = "/plugins/{$this->packageInfo['name']}/logo.jpg";
     }
+
     public function getPackageInfo(){
 
         return json_decode(app('files')->get($this->path . "/package.json"), true);

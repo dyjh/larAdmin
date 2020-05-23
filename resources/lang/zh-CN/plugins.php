@@ -6,4 +6,5 @@ return [
     "Title"       =>  "应用名称",
     "Version"       =>  "应用版本",
     "Description"       =>  "应用描述",
+    "Status"       =>  "状态",
 ];

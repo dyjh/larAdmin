@@ -30,3 +30,45 @@ if (! function_exists('array_get')) {
         return Arr::get($array, $key, $default);
     }
 }
+
+if (!function_exists('assets')) {
+
+    function assets($relativeUri)
+    {
+        // add query string to fresh cache
+        if (Str::startsWith($relativeUri, 'styles') || Str::startsWith($relativeUri, 'scripts')) {
+            return Url::shopUrl("resources/assets/dist/$relativeUri") . "?v=" . config('app.version');
+        } elseif (Str::startsWith($relativeUri, 'lang')) {
+            return Url::shopUrl("resources/$relativeUri");
+        } else {
+            return Url::shopUrl("resources/assets/$relativeUri");
+        }
+    }
+}
+if (!function_exists('static_url')) {
+
+    function static_url($relativeUri)
+    {
+        return Url::shopUrl('static/' . $relativeUri);
+    }
+}
+
+if (!function_exists('plugin')) {
+
+    function plugin($id)
+    {
+        return app('plugins')->getPlugin($id);
+    }
+}
+
+if (!function_exists('plugin_assets')) {
+
+    function plugin_assets($id, $relativeUri)
+    {
+        if ($plugin = plugin($id)) {
+            return $plugin->assets($relativeUri);
+        } else {
+            throw new InvalidArgumentException("No such plugin.");
+        }
+    }
+}

@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $title
  * @property string $version
  * @property string $description
- * @property int $enable
+ * @property int $enabled
  * @property string $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -28,7 +28,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Plugins extends Model
 {
-	use SoftDeletes;
 	protected $table = 'plugins';
 
 	protected $casts = [
@@ -41,6 +40,6 @@ class Plugins extends Model
 		'title',
 		'version',
 		'description',
-		'enable'
+		'enabled'
 	];
 }
