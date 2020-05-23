@@ -132,7 +132,7 @@ JS;
 
         $tab->add('已安裝', $grid2->render());
         $tab->add('未安裝', $grid->render());
-        return $content->title("配置")->description('设置')->row($tab->render());
+        return $content->title("插件管理")->row($tab->render());
     }
 
     public function install(Request $request)
