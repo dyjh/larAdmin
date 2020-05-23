@@ -4,14 +4,24 @@
 namespace App\Http\Controllers\Api;
 
 
-use App\Exceptions\api\SmsException;
-use Illuminate\Support\Facades\Redis;
+use App\Common\Repositories\PluginsRepository;
+
 
 class TestController
 {
+
+    /**
+     * @var PluginsRepository
+     */
+    public $repository;
+
+    public function __construct(PluginsRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function index()
     {
-        $redis = Redis::connection();
-        dd($redis->lpop('111'));
+        dd(app('plugins')->getEnabledPlugins());
     }
 }

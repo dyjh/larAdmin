@@ -20,7 +20,7 @@ class CreateTablePlugins extends Migration
             $table->string('title', 50)->comment('应用标题');
             $table->string('version', 10)->comment('应用名称');
             $table->string('description', 255)->comment('应用描述');
-            $table->unsignedTinyInteger('enable')->comment('开启状态 0 关闭 1 开启');
+            $table->unsignedTinyInteger('enabled')->comment('开启状态 0 关闭 1 开启');
             $table->softDeletes();
             $table->timestamps();
         });

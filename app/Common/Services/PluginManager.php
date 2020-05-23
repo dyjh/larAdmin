@@ -1,12 +1,14 @@
 <?php
 
-namespace app\common\services;
+namespace App\Common\Services;
 
-use app\common\events;
+use App\Common\Events\PluginWasDeleted;
+use App\Common\Events\PluginWasDisabled;
+use App\Common\Events\PluginWasEnabled;
+use App\Common\Repositories\PluginsRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Events\Dispatcher;
-use app\common\repositories\OptionRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +20,7 @@ class PluginManager
     protected $app;
 
     /**
-     * @var OptionRepository
+     * @var PluginsRepository
      */
     protected $option;
 
@@ -39,7 +41,7 @@ class PluginManager
 
     public function __construct(
         Application $app,
-        OptionRepository $option,
+        PluginsRepository $option,
         Dispatcher $dispatcher,
         Filesystem $filesystem
     )
@@ -66,7 +68,10 @@ class PluginManager
                 if (file_exists($pluginDir . "/package.json")) {
                     // Instantiates an Plugin object using the package path and package.json file.
                     $plugin = new Plugin($pluginDir);
-
+                    $checkInstall = $this->option->findWhere(['name' => $plugin->name])->first();
+                    if (!$checkInstall) {
+                        continue;
+                    }
                     // Per default all plugins are installed if they are registered in composer.
                     $plugin->setInstalled(true);
                     $plugin->setEnabled($this->isOptionEnable($plugin->name));
@@ -96,10 +101,8 @@ class PluginManager
 
     public function getPluginId($name)
     {
-        $pluginIdConfig = array_first(\app\common\modules\shop\ShopConfig::current()->get('plugin'), function ($item) use ($name) {
-            return $item['name'] == $name;
-        }, []);
-        return $pluginIdConfig['id'];
+        $plugin = $this->option->findWhere(['name' => $name])->first();
+        return $plugin->id;
     }
 
     public function findPlugin($id)
@@ -122,12 +125,13 @@ class PluginManager
         if (!$this->isOptionEnable($name)) {
             DB::transaction(function () use ($name) {
                 $plugin = $this->getPlugin($name);
-                $enabled = $this->getEnabled();
+                $enabled = $this->getAll();
 //                $enabled[] = $name;
                 $this->setEnabled($enabled[$name]['id'], 1, $name);
                 $plugin->setEnabled(true);
                 $plugin->app()->init();
-                $this->dispatcher->fire(new events\PluginWasEnabled($plugin));
+                //b$this->dispatcher->fire(new events\PluginWasEnabled($plugin));
+                event(new PluginWasEnabled($plugin));
             });
         }
 
@@ -141,14 +145,15 @@ class PluginManager
     public function disable($name)
     {
 
-        $enabled = $this->getEnabled();
+        $enabled = $this->getAll();
 
         $plugin = $this->getPlugin($name);
 
         $this->option->editDisable($enabled[$name]['id']);
 
         $plugin->setEnabled(false);
-        $this->dispatcher->fire(new events\PluginWasEnabled($plugin));
+        //$this->dispatcher->fire(new events\PluginWasEnabled($plugin));
+        event(new PluginWasDisabled($plugin));
     }
 
     /**
@@ -162,8 +167,8 @@ class PluginManager
         $this->disable($name);
 
         // fire event before deleeting plugin files
-        $this->dispatcher->fire(new events\PluginWasDeleted($plugin));
-
+        //$this->dispatcher->fire(new events\PluginWasDeleted($plugin));
+        event(new PluginWasDeleted($plugin));
         $this->filesystem->deleteDirectory($plugin->getPath());
 
         // refresh plugin list
@@ -178,8 +183,8 @@ class PluginManager
     public function getEnabledPlugins()
     {
         $only = [];
-        foreach ($this->getEnabled() as $key => $plugin) {
-            if ($plugin['enabled']) {
+        foreach ($this->getAll() as $key => $plugin) {
+            if ($plugin['enabled'] == 1) {
                 $only[] = $key;
             }
         }
@@ -191,25 +196,29 @@ class PluginManager
      *
      * @return array
      */
-    public function getEnabled()
+    public function getAll()
     {
-        return (array)$this->option->all();
+        return (array)$this->option->getAll();
 
     }
 
     /**
      * Persist the currently enabled plugins.
      *
-     * @param array $enabled
+     * @param $id
+     * @param int $enabled
+     * @param null $name
+     * @return bool|mixed
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     protected function setEnabled($id, $enabled, $name = null)
     {
-        $pluginData = [
-            'option_name' => $name,
-            'option_value' => 'true',
-            'enabled' => $enabled,
-        ];
-        return $this->option->insertPlugin($pluginData);
+        $check = $this->option->findWhere(['name', $name]);
+        if ($check) {
+            return $this->option->insertPlugin($name);
+        } else {
+            return $this->option->switchPlugin($name, $enabled);
+        }
     }
 
     /**
@@ -230,9 +239,9 @@ class PluginManager
 
     private function isOptionEnable($plugin)
     {
-        $plugins = $this->getEnabled();
+        $plugins = $this->getAll();
         return $plugins[$plugin]['enabled'];
-//        return in_array($plugin, $this->getEnabled());
+//        return in_array($plugin, $this->getAll());
     }
 
     /**
@@ -242,40 +251,7 @@ class PluginManager
      */
     protected function getPluginsDir()
     {
-        return $this->app->basePath() . '/plugins';
+        return $this->app->basePath() . '/Plugins';
     }
 
-    public function enTopShow($name, $enable)
-    {
-        if (!$this->getPlugin($name)) {
-            $name = str_replace("_", "-", $name);
-        }
-        $enabled = $this->getEnabled();
-
-        $this->setTopShow($enabled[$name]['id'], $enable);
-    }
-
-    public function setTopShow($id, $enabled, $name = null)
-    {
-        if ($id) {
-            return $this->option->editTopShowById($id, $enabled);
-        } else {
-            $pluginData = [
-                'uniacid' => \YunShop::app()->uniacid,
-                'option_name' => $name,
-                'option_value' => 'true',
-                'top_show' => $enabled
-            ];
-            return $this->option->insertPlugin($pluginData);
-        }
-    }
-
-    public function isTopShow($name)
-    {
-        $plugins = (array)$this->option->all();
-        if (!$this->getPlugin($name)) {
-            $name = str_replace("_", "-", $name);
-        }
-        return $plugins = $plugins[$name]['top_show'];
-    }
 }

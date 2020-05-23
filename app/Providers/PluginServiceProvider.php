@@ -6,14 +6,15 @@
  * Time: 21:33
  */
 
-namespace app\common\providers;
+namespace App\Providers;
 
 use App\Common\Events\PluginWasDeleted;
 use App\Common\Events\PluginWasDisabled;
 use App\Common\Events\PluginWasEnabled;
+use App\Common\Events\PluginWasInstall;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
-use app\common\services\PluginManager;
+use App\Common\Services\PluginManager;
 use Illuminate\Support\ServiceProvider;
 
 class PluginServiceProvider extends ServiceProvider
@@ -47,6 +48,9 @@ class PluginServiceProvider extends ServiceProvider
         $plugins = app('plugins')->getEnabledPlugins();
 
         foreach ($plugins as $plugin) {
+            /**
+             *
+             */
             // always add paths of translation files for namespace hints
             $loader->addNamespace($plugin->getNameSpace(), $plugin->getPath() . "/lang");
 
@@ -68,6 +72,7 @@ class PluginServiceProvider extends ServiceProvider
             PluginWasEnabled::class,
             PluginWasDeleted::class,
             PluginWasDisabled::class,
+            PluginWasInstall::class,
         ], function ($event) {
             // call callback functions of plugin
             if (file_exists($filename = $event->plugin->getPath() . "/callbacks.php")) {

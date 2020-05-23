@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common\services;
+namespace App\Common\Services;
 
 use ArrayAccess;
 use Illuminate\Support\Arr;

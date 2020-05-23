@@ -50,7 +50,6 @@ class NormalConfigController extends Controller
             $groups = explode('-',$k);
             $num = count($groups);
             $method = "save_{$groups[$num - 1]}";
-            dd($method);
             ConfigType::$method($groups, $v);
         }
         $files = request()->file();

@@ -7,6 +7,8 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Encore\Admin\Widgets\Tab;
+use Encore\Admin\Widgets\Table;
 
 class PluginsController extends AdminController
 {
@@ -24,6 +26,19 @@ class PluginsController extends AdminController
      */
     protected function grid()
     {
+        $tab = new Tab();
+        $headers = ['Id', 'Email', 'Name', 'Company'];
+        $rows = [
+            [1, 'labore21@yahoo.com', 'Ms. Clotilde Gibson', 'Goodwin-Watsica'],
+            [2, 'omnis.in@hotmail.com', 'Allie Kuhic', 'Murphy, Koepp and Morar'],
+            [3, 'quia65@hotmail.com', 'Prof. Drew Heller', 'Kihn LLC'],
+            [4, 'xet@yahoo.com', 'William Koss', 'Becker-Raynor'],
+            [5, 'ipsa.aut@gmail.com', 'Ms. Antonietta Kozey Jr.'],
+        ];
+
+        $table = new Table($headers, $rows);
+        $tab->add("未安装插件", $table);
+        $tab->render();
         $grid = new Grid(new Plugins());
 
         $grid->column('id', __('Id'));
