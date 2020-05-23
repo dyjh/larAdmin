@@ -5,6 +5,7 @@ namespace App\Common\Services;
 use App\Common\Events\PluginWasDeleted;
 use App\Common\Events\PluginWasDisabled;
 use App\Common\Events\PluginWasEnabled;
+use App\Common\Events\PluginWasInstall;
 use App\Common\Repositories\PluginsRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
@@ -69,12 +70,9 @@ class PluginManager
                     // Instantiates an Plugin object using the package path and package.json file.
                     $plugin = new Plugin($pluginDir);
                     $checkInstall = $this->option->findWhere(['name' => $plugin->name])->first();
-                    if (!$checkInstall) {
-                        continue;
+                    if ($checkInstall) {
+                        $plugin->setInstalled(true);
                     }
-                    // Per default all plugins are installed if they are registered in composer.
-                    $plugin->setInstalled(true);
-                    $plugin->setEnabled($this->isOptionEnable($plugin->name));
 
                     $plugins->put($plugin->name, $plugin);
 
@@ -86,6 +84,34 @@ class PluginManager
             });
         }
         return $this->plugins;
+    }
+
+    /**
+     * @param int $start
+     * @param int $perPage
+     * @return Collection
+     */
+    public function getPluginsUninstall(int $start = 0, int $perPage = 0): Collection
+    {
+        $plugins = new Collection();
+
+        $pluginDirs = $this->filesystem->directories(base_path('plugins'));
+
+        foreach ($pluginDirs as $pluginDir) {
+            if (file_exists($pluginDir . "/package.json")) {
+                $plugin = new Plugin($pluginDir);
+                $checkInstall = $this->option->findWhere(['name' => $plugin->name])->first();
+                if ($checkInstall) {
+                    continue;
+                }
+                $plugins->add($plugin);
+
+            }
+        }
+        if ($start && $perPage) {
+            $plugins = $plugins->slice(1, 1);
+        }
+        return $plugins;
     }
 
     /**
@@ -173,6 +199,12 @@ class PluginManager
 
         // refresh plugin list
         $this->plugins = null;
+    }
+
+    public function install($name)
+    {
+        $plugin = $this->getPlugin($name);
+        event(new PluginWasInstall($plugin));
     }
 
     /**

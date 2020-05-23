@@ -5,7 +5,7 @@ namespace App\Common\Services;
 use ArrayAccess;
 use Illuminate\Support\Arr;
 use Illuminate\Contracts\Support\Arrayable;
-use app\common\helpers\Url;
+
 
 /**
  * @property string $name
@@ -45,7 +45,7 @@ class Plugin implements Arrayable, ArrayAccess
      *
      * @var bool
      */
-    protected $installed = true;
+    protected $installed = false;
 
 
     /**
@@ -56,13 +56,13 @@ class Plugin implements Arrayable, ArrayAccess
     protected $enabled = false;
 
     /**
-     * @param       $path
-     * @param array $packageInfo
+     * @param string $path
      */
-    public function __construct($path)
+    public function __construct(string $path)
     {
         $this->path = $path;
         $this->packageInfo = $this->getPackageInfo();
+        $this->packageInfo['icon'] = "/plugins/{$this->packageInfo['name']}/logo.jpg";
     }
     public function getPackageInfo(){
 

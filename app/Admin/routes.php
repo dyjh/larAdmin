@@ -11,6 +11,8 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index')->name('admin.home');
+    $router->get('/plugins-manager', 'Plugins\ManagerController@index');
+    $router->post('/plugins-manager/install', 'Plugins\ManagerController@install');
     $router->resource('/diySetting', 'Config\ConfigController');
     $router->get('/setting_form', 'Config\NormalConfigController@form');
     $router->post('/setting_form_save', 'Config\NormalConfigController@settingFormSave');

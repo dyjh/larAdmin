@@ -13,6 +13,7 @@ use App\Common\Events\PluginWasDisabled;
 use App\Common\Events\PluginWasEnabled;
 use App\Common\Events\PluginWasInstall;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Common\Services\PluginManager;
 use Illuminate\Support\ServiceProvider;
@@ -74,6 +75,7 @@ class PluginServiceProvider extends ServiceProvider
             PluginWasDisabled::class,
             PluginWasInstall::class,
         ], function ($event) {
+            Log::info($event->plugin->getPath());
             // call callback functions of plugin
             if (file_exists($filename = $event->plugin->getPath() . "/callbacks.php")) {
                 $callbacks = require $filename;

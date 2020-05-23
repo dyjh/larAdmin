@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Plugin
+ * Class Plugins
  *
  * @property int $id
  * @property string $icon

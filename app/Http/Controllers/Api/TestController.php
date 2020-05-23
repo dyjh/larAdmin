@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Common\Repositories\PluginsRepository;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 
 class TestController
@@ -22,6 +24,10 @@ class TestController
 
     public function index()
     {
-        dd(app('plugins')->getEnabledPlugins());
+
+        $data = app('plugins')->install('plugins-market');
+
+
+Log::info(1111);
     }
 }

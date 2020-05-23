@@ -88,4 +88,8 @@ return [
         public_path('storage') => storage_path('app/public'),
     ],
 
+    'plugins' => [
+        public_path('plugins') => base_path('plugins'),
+    ],
+
 ];

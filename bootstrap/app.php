@@ -41,6 +41,11 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+$app->singleton(\App\Common\Services\Plugin::class, function () {
+    return new \App\Common\Services\Plugin('');
+});
+
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application

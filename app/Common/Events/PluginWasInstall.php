@@ -2,7 +2,8 @@
 
 namespace App\Common\Events;
 
-use app\common\services\Plugin;
+
+use App\Common\Services\Plugin;
 
 class PluginWasInstall extends Event
 {
